@@ -3,12 +3,11 @@
 	<!-- number scroll muncul hanya saat di device handphone -->
 	<div class="container-fluid hidden-lg hidden-md hidden-sm num-scroll-xs">
 		<div class="scrollmenu" id="style-1">
-			<?php for ($i=1; $i < 9 ; $i++) { ?>
-				<button class="btn-arrow cs-btn-num-soal"><?php echo $i; ?></button>
-			<?php } ?>
-			<button class="btn-arrow cs-btn-num-soal right-btn-num-soal">
-				<?php echo $i; ?>
-			</button>
+			
+			<?php foreach ($jumlah as $sl) : ?>
+				<button class="btn-arrow cs-btn-num-soal no"><?= $sl->nomor_soal ?></button>
+			<?php endforeach; ?>
+			
 		</div>
 	</div>
 	<!-- number scroll muncul hanya saat di device handphone -->
