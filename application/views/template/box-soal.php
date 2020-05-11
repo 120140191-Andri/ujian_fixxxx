@@ -41,32 +41,62 @@
 				<!-- isi-soal -->
 
 				<!-- daftar-jawaban-soal -->
-				<div class="sub-jawaban">
-					
-						<a href="#pilih-jawaban" class="pilihan-jawaban">
-							<div class="abjad-jawaban"><p>A</p></div>
-							<div class="isi-jawaban a">
-							</div>
-						</a>
-
-						<a href="#pilih-jawaban" class="pilihan-jawaban">
-							<div class="abjad-jawaban"><p>B</p></div>
-							<div class="isi-jawaban b">
-							</div>
-						</a>
-
-						<a href="#pilih-jawaban" class="pilihan-jawaban">
-							<div class="abjad-jawaban"><p>C</p></div>
-							<div class="isi-jawaban c">
-							</div>
-						</a>
-						
-						<a href="#pilih-jawaban" class="pilihan-jawaban">
-							<div class="abjad-jawaban"><p>D</p></div>
-							<div class="isi-jawaban isi_d">
-							<p></p></div>
-						</a>
-
+				<div class="funkyradio">
+					<!-- loop -->
+					<div class="funkyradio-default">			
+						<input type="radio" name="radio" id="radio1" value="A">	
+						<label for="radio1" class="radio-label">
+							<span class="alphabet">A</span>
+							<span class="isi-jawaban a"></span>
+						</label>
+					</div>
+					<!-- loop -->
+					<div class="funkyradio-default">			
+						<input type="radio" name="radio" id="radio2" value="B">	
+						<label for="radio2" class="radio-label">
+							<span class="alphabet">B</span>
+							<span class="isi-jawaban b"></span>
+						</label>
+					</div>
+					<!-- loop -->
+					<div class="funkyradio-default">			
+						<input type="radio" name="radio" id="radio3" value="C">	
+						<label for="radio3" class="radio-label">
+							<span class="alphabet">C</span>
+							<span class="isi-jawaban c"></span>
+						</label>
+					</div>
+					<!-- loop -->
+					<div class="funkyradio-default">			
+						<input type="radio" name="radio" id="radio4" value="D">	
+						<label for="radio4" class="radio-label">
+							<span class="alphabet">D</span>
+							<span class="isi-jawaban isi_d"></span>
+						</label>
+					</div>
+					<!-- loop -->
+					<!-- js ketika radio button di klik -->
+					<script>
+					$(document).ready(function () {
+						$('#radio1').click(function(){
+							var jawaban = $('#radio1').val();
+							$('#jwb').val(jawaban);
+						});
+						$('#radio2').click(function(){
+							var jawaban = $('#radio2').val();
+							$('#jwb').val(jawaban);
+						});
+						$('#radio3').click(function(){
+							var jawaban = $('#radio3').val();
+							$('#jwb').val(jawaban);
+						});
+						$('#radio4').click(function(){
+							var jawaban = $('#radio4').val();
+							$('#jwb').val(jawaban);
+						});
+					});
+					</script>
+					<p>Jawaban Anda <input type="text" id="jwb" value=""> *Buat Contoh aja ,Ambil Value nya dari input yg idnya jwb</p>
 				</div>
 				<!-- daftar-jawaban-soal -->
 			</div>
@@ -98,8 +128,7 @@
 				<div class="sub-isi-soal">
 
 					<?php foreach ($jumlah as $sl) : ?> 				
-						<button class="btn-arrow cs-btn-num-soal no"><?= $sl->nomor_soal ?></button>
-
+						<button class="btn-arrow cs-btn-num-soal no nos-<?= $sl->nomor_soal ?>"><?= $sl->nomor_soal ?></button>
 					<?php endforeach; ?>
 
 					<!-- button hijau jika jawaban sudah terisi -->
@@ -113,6 +142,44 @@
 		</div>
 		<!-- navigasi-soal -->
 	</div>
+	
+	<script>
+		function ubah_r(){
+			
+			if ( $('#jwb').val() == "A" ){
+				$( ".a" ).addClass('isi-sebelumnya');
+				$( ".b" ).removeClass('isi-sebelumnya');
+				$( ".c" ).removeClass('isi-sebelumnya');
+				$( ".isi_d" ).removeClass('isi-sebelumnya');
+			}else if( $('#jwb').val() == "B" ){
+				$( ".a" ).removeClass('isi-sebelumnya');
+				$( ".b" ).addClass('isi-sebelumnya');
+				$( ".c" ).removeClass('isi-sebelumnya');
+				$( ".isi_d" ).removeClass('isi-sebelumnya');
+			}else if( $('#jwb').val() == "C" ){
+				$( ".a" ).removeClass('isi-sebelumnya');
+				$( ".b" ).removeClass('isi-sebelumnya');
+				$( ".c" ).addClass('isi-sebelumnya');
+				$( ".isi_d" ).removeClass('isi-sebelumnya');
+			}else if( $('#jwb').val() == "D" ){
+				$( ".a" ).removeClass('isi-sebelumnya');
+				$( ".b" ).removeClass('isi-sebelumnya');
+				$( ".c" ).removeClass('isi-sebelumnya');
+				$( ".isi_d" ).addClass('isi-sebelumnya');
+			}else{
+				$( ".a" ).removeClass('isi-sebelumnya');
+				$( ".b" ).removeClass('isi-sebelumnya');
+				$( ".c" ).removeClass('isi-sebelumnya');
+				$( ".isi_d" ).removeClass('isi-sebelumnya');
+			}
+
+			$( "#radio1" ).attr("checked",false);
+			$( "#radio2" ).attr("checked",false);
+			$( "#radio3" ).attr("checked",false);
+			$( "#radio4" ).attr("checked",false);
+
+		}
+	</script>
 
 	<!-- load soal awal -->
 	<script>
@@ -121,6 +188,9 @@
 			load_awal();
 
 			function load_awal() {
+				
+				ubah_r();
+
 				$.ajax({
 					type: 'POST',
 					url: '<?= base_url('index.php/Siswa/ujian') ?>',
@@ -128,6 +198,10 @@
 						ids: 1
 					},
 					success: function (respon) {
+						
+						$('.no').removeClass('right-btn-num-soal');
+						$('.nos-1').addClass('right-btn-num-soal');
+
 						$('.no_sekarang').val(1);
 						$('.nomor-soal').text(1);
 						var dt = JSON.parse(respon);
@@ -147,9 +221,38 @@
 	<script type="text/javascript">
             $(document).ready(function () {
                 $('.no').click(function () {
-                    var nomor = $(this).text();
-                    $('.no_sekarang').val(nomor);
+                    
+					var nomor = $(this).text();
+
+					$.ajax({
+                            type: 'POST',
+                            url: '<?= base_url('index.php/Siswa/sesi_jawaban') ?>',
+                            data: { 
+								ids: nomor,
+								id: $('.no_sekarang').val(),
+								jwb_s: $('#jwb').val() 
+							},
+                            success: function (respon) {
+                                if (respon == "A"){
+									$('#jwb').val(respon);
+								}else if (respon == "B"){
+									$('#jwb').val(respon);
+								}else if (respon == "C"){
+									$('#jwb').val(respon);
+								}else if (respon == "D"){
+									$('#jwb').val(respon);
+								}else{
+									$('#jwb').val('');
+								}
+								ubah_r();
+                            }
+                        });
+
+					$('.no_sekarang').val(nomor);
 					$('.nomor-soal').text(nomor);
+					$('.no').removeClass('right-btn-num-soal');
+					$(this).addClass('right-btn-num-soal');
+
                     $.ajax({
                         type: 'POST',
                         url: '<?= base_url('index.php/Siswa/ujian') ?>',
@@ -178,8 +281,36 @@
                     if(parseInt(nomor) > parseInt(total_soal)){
                         alert('Soal Sudah Habis');
                     }else{
+
+						$.ajax({
+                            type: 'POST',
+                            url: '<?= base_url('index.php/Siswa/sesi_jawaban') ?>',
+                            data: { 
+								ids: nomor,
+								id: $('.no_sekarang').val(),
+								jwb_s: $('#jwb').val() 
+							},
+                            success: function (respon) {
+                                if (respon == "A"){
+									$('#jwb').val(respon);
+								}else if (respon == "B"){
+									$('#jwb').val(respon);
+								}else if (respon == "C"){
+									$('#jwb').val(respon);
+								}else if (respon == "D"){
+									$('#jwb').val(respon);
+								}else{
+									$('#jwb').val('');
+								}
+								ubah_r();
+                            }
+                        });
+
                         $('.no_sekarang').val(nomor);
 						$('.nomor-soal').text(nomor);
+
+						$('.no').removeClass('right-btn-num-soal');
+						$('.nos-'+nomor).addClass('right-btn-num-soal');
 
                         $.ajax({
                             type: 'POST',
@@ -212,8 +343,36 @@
                     if(parseInt(nomor) < parseInt(1)){
                         alert('Soal Awal');
                     }else{
+
+						$.ajax({
+                            type: 'POST',
+                            url: '<?= base_url('index.php/Siswa/sesi_jawaban') ?>',
+                            data: { 
+								ids: nomor,
+								id: $('.no_sekarang').val(),
+								jwb_s: $('#jwb').val() 
+							},
+                            success: function (respon) {
+                                if (respon == "A"){
+									$('#jwb').val(respon);
+								}else if (respon == "B"){
+									$('#jwb').val(respon);
+								}else if (respon == "C"){
+									$('#jwb').val(respon);
+								}else if (respon == "D"){
+									$('#jwb').val(respon);
+								}else{
+									$('#jwb').val('');
+								}
+								ubah_r();
+                            }
+                        });
+
                         $('.no_sekarang').val(nomor);
 						$('.nomor-soal').text(nomor);
+
+						$('.no').removeClass('right-btn-num-soal');
+						$('.nos-'+nomor).addClass('right-btn-num-soal');
 
                         $.ajax({
                             type: 'POST',
