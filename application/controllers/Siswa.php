@@ -21,10 +21,13 @@ class Siswa extends CI_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model('M_soal');
+		$this->load->library('session');
 	}
 
 	public function index()
 	{
+		$this->session->sess_destroy();
+
 		$data['jumlah'] = $this->M_soal->jumlah_soal()->result();
 		$data['total_soal'] = $this->M_soal->jumlah_soal()->num_rows();
 
@@ -51,6 +54,23 @@ class Siswa extends CI_Controller {
 
 		}
 
+	}
+
+	public function sesi_jawaban(){
+		
+		// nomor selanjutnya / nomor yang di klik
+		$ids  = $this->input->post('ids');
+		// nomor soal sebelumnya
+		$id   = $this->input->post('id');
+		// jawaban sebelumnya
+		$jawaban_s = $this->input->post('jwb_s');
+
+		// buat sessi jawaban
+		$this->session->set_userdata('soalke'. $id ,$jawaban_s);
+		
+		$data['jwbn'] = $this->session->userdata('soalke'.$ids);
+
+		echo $data['jwbn'];
 	}
 
 }
